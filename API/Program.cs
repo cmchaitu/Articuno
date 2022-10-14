@@ -1,12 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Data;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace API
 {
@@ -14,11 +6,11 @@ namespace API
     {
         public static void Main(string[] args)
         {
-          var host =  CreateHostBuilder(args).Build();
+            var host = CreateHostBuilder(args).Build();
             CreateDbIfNotExists(host);
             host.Run();
-
         }
+
         public static void CreateDbIfNotExists(IHost host)
         {
             using (var scope = host.Services.CreateScope())  //IServiceScope Used for Scoped Services
@@ -37,7 +29,6 @@ namespace API
                 }
             }
         }
-    
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
