@@ -12,7 +12,10 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\build</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\features\about\" />
+    <Folder Include="src\features\catalog\ProductDetails\" />
     <Folder Include="src\features\catalog\ProductCard\" />
     <Folder Include="src\features\catalog\ProductList\" />
+    <Folder Include="src\features\home\" />
   </ItemGroup>
 </Project>
