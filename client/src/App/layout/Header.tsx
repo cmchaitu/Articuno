@@ -1,5 +1,5 @@
 import { ShoppingCart } from "@mui/icons-material";
-import { AppBar, Badge, FormControlLabel, FormGroup, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Box, FormControlLabel, FormGroup, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import artlogo from '../layout/articuno.png';
 
@@ -24,32 +24,40 @@ export default function Header({ checked, handlechange }: Props) {
         ]
 
     return (
-        <AppBar sx={{ mb: 4, bgcolor: 'royalblue ' }} position="sticky">
-            <Toolbar>
-                <img src={artlogo} className="App-logo" alt="logo" />
+        <AppBar sx={{ bgcolor: 'cornflowerblue' }} position="absolute">
+            <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box display='flex' alignItems='center'>
+                    <img src={artlogo} className="App-logo" alt="logo" />
+                    <Typography component={NavLink} to='/'
+                        variant="h6" color='white' sx={{ fontWeight: 'bold', textDecoration: 'inherit' }} >
+                        Articuno
+                    </Typography>
+                </Box>
+                <Box display='flex' alignItems='center' >
 
-                <Typography variant="h3" color='white' sx={{ fontWeight: 'bold' }} >
-                    Articuno
-                </Typography>
-                <List sx={{ display: 'flex' }} >
-                    {midlinks.map(({ title, path }) => (
-                        <ListItem
-                            component={NavLink}
-                            to={path}
-                            key={path}
-                            sx={{
-                                color: 'white',
-                                typography: 'h6',
-                                bgcolor: 'inherit',
-                                '&:hover': { color: 'black' },
-                                '&.active': { color: 'black', fontWeight: 'bold' }
-                            }}
+                    <List sx={{ display: 'flex' }} >
+                        {midlinks.map(({ title, path }) => (
+                            <ListItem
+                                component={NavLink}
+                                to={path}
+                                key={path}
+                                sx={{
+                                    color: 'white',
+                                    typography: 'h6',
+                                    bgcolor: 'inherit',
+                                    '&:hover': { color: 'black' },
+                                    '&.active': { color: 'black' }
+                                }}
 
-                        >{title}
-                        </ListItem>
+                            >{title}
+                            </ListItem>
 
-                    ))
-                    }
+                        ))
+                        }
+                    </List>
+
+                </Box>
+                <Box display='flex' alignItems='center'>
                     <IconButton sx={{
                         color: 'white',
                         '&:hover': { color: 'black' }
@@ -58,26 +66,26 @@ export default function Header({ checked, handlechange }: Props) {
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
-                </List>
 
-                <List sx={{ display: 'flex' }} >
-                    {rightlinks.map(({ title, path }) => (
-                        <ListItem
-                            component={NavLink}
-                            to={path}
-                            key={path}
-                            sx={{ typography: 'h6', bgcolor: 'secondary' }}
-                        >{title}
-                        </ListItem>
+                    <List sx={{ display: 'flex' }} >
+                        {rightlinks.map(({ title, path }) => (
+                            <ListItem
+                                component={NavLink}
+                                to={path}
+                                key={path}
+                                sx={{ typography: 'h6', bgcolor: 'secondary' }}
+                            >{title}
+                            </ListItem>
 
-                    ))
-                    }
+                        ))
+                        }
 
-                </List>
-                <FormGroup>
-                    <FormControlLabel control={<Switch checked={checked} onChange={handlechange} color="primary" aria-label='Dark'
-                    />} label="Dark Mode" />
-                </FormGroup>
+                    </List>
+                    <FormGroup>
+                        <FormControlLabel control={<Switch checked={checked} onChange={handlechange} color="primary" aria-label='Dark'
+                        />} label="Dark Mode" />
+                    </FormGroup>
+                </Box>
 
             </Toolbar>
         </AppBar >)

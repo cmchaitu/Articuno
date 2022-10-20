@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Product } from "../../App/Models/Product";
-import ProductList from "./ProductList/ProductList";
+import ProductList from "./ProductList";
 export default function Catalog() {
     const [products, setproducts] = useState<Product[]>([])
 
@@ -14,7 +14,7 @@ export default function Catalog() {
     }, [])
     return (
         <>
-            <Container >
+            <Container sx={{ mt: 20 }} >
                 <ProductList products={products} />
             </Container>
         </>
