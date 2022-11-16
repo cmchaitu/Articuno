@@ -6,7 +6,6 @@ namespace API.Data
     {
         public static void Initialize(StoreDBContext context)
         {
-            context.Database.EnsureCreated();
             if (context.Products.Any())
             {
                 return;
