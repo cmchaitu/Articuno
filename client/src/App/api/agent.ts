@@ -2,8 +2,8 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 
-axios.defaults.baseURL = 'https://localhost:7070/api/';
-
+axios.defaults.baseURL = 'http://localhost:7070/api/';
+axios.defaults.withCredentials = true;
 const responsebody = (response: AxiosResponse) => response.data
 const sleep = () => { new Promise(resolve => setTimeout(resolve, 100000)) }
 //above arrow fn is similar to below
@@ -61,9 +61,21 @@ const testerrors = {
     getvalidationerror: () => requests.get('error/validation-error'),
     get500error: () => requests.get('error/server-error'),
 }
+const Basket = {
+    get: () => requests.get('basket'),
+    addItem: (productid: number, quantity = 1) => requests.post(`basket?productID=${productid}&quantity=${quantity}`, {}),
+    removeItem: (productid: number, quantity = 1) => requests.delete(`basket?productID=${productid}&quantity=${quantity}`)
+}
 const agent = {
     catalog,
-    testerrors
+    testerrors,
+    Basket
 }
+
+//const requests = {
+//    get: (url: string) => axios.get(url, { headers: { "Access-Control-Allow-Credentials": "true" } }).then(responseBody),
+//    post: (url: string, body: {}) => axios.post(url, body, { headers: { "Access-Control-Allow-Credentials": "true" }, }).then(responseBody),
+//    put: (url: string, body: {}) => axios.put(url, body, { headers: { "Access-Control-Allow-Credentials": "true" }, }).then(responseBody), delete: (url: string) => axios.delete(url, { headers: { "Access-Control-Allow-Credentials": "true" } }).then(responseBody),
+//};
 
 export default agent

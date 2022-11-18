@@ -1,10 +1,22 @@
-import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, CircularProgress, Typography } from "@mui/material";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import agent from "../../App/api/agent";
+import { useStoreContext } from "../../App/context/StoreContext";
 import { Product } from "../../App/Models/Product";
+import { PriceFormat } from "../../App/util/util";
 interface Props {
     product: Product
 }
 export default function ProductCard({ product }: Props) {
+    const [loading, setLoading] = useState(false);
+    const { setBasket } = useStoreContext();
+    function handleAddItem(productID: number) {
+        setLoading(true);
+        agent.Basket.addItem(productID)
+            .then((basket) => setBasket(basket))
+            .catch(error => console.log(error)).finally(() => setLoading(false))
+    }
     return (
         <Card sx={{ bgcolor: 'cornflowerblue' }}>
             <CardHeader
@@ -34,7 +46,7 @@ export default function ProductCard({ product }: Props) {
             />
             <CardContent>
                 <Typography gutterBottom color='white' variant="h6" component="div">
-                    ${product.price / 100}
+                    {PriceFormat(product.price)}
                 </Typography>
                 <Typography variant="body2" color='white'>
                     Type: {product.type}
@@ -44,17 +56,21 @@ export default function ProductCard({ product }: Props) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button sx={{ color: 'white' }} size="small">Add to Cart</Button>
+                {loading
+                    ? <Button sx={{ color: 'white' }}
+                        size="small"><CircularProgress size="small" /></Button>
+                    :
+                    <Button
+                        onClick={() => handleAddItem(product.id)}
+                        sx={{ color: 'white' }}
+                        size="small">Add to Cart
+                    </Button>
+                }
                 <Button sx={{ color: 'white' }} component={Link} to={`/catalog/${product.id}`} size="small">
                     View
                 </Button>
             </CardActions>
         </Card >
 
-        //<ListItem key={product.id}>
-        //    <ListItemAvatar><Avatar variant="square" src='https://lorempokemon.fakerapi.it/pokemon/200' />
-        //    </ListItemAvatar>
-        //    {product.name} - {product.price}
-        //</ListItem>
     )
 }

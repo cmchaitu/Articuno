@@ -11,7 +11,7 @@ namespace API.Migrations
 {
     [DbContext(typeof(StoreDBContext))]
     [Migration("20221114153136_latestseven")]
-    partial class latestseven
+    partial class LatestSeven
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

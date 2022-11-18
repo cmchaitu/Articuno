@@ -51,11 +51,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BasketDTO>> AddItemstoBasket(int productid, int quantity)
+        public async Task<ActionResult<BasketDTO>> AddItemstoBasket(int ProductID, int quantity)
         {
             Basket basket = await RetrieveBasket();
             if (basket == null) { basket = CreateBasket(); }
-            Product product = await _context.Products.FindAsync(productid);
+            Product product = await _context.Products.FindAsync(ProductID);
             basket.AddItem(product, quantity);
 
             var result = await _context.SaveChangesAsync() > 0;

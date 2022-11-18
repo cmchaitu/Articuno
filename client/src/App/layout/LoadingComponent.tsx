@@ -1,9 +1,9 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-function LoadingComponent() {
+function LoadingComponent(props: any) {
     return (
         <><Typography sx={{ textAlign: 'center', mt: 20 }} variant="h6" color='primary'>
-            Loading..</Typography>
+            {props.message}</Typography>
             <Box sx={{
                 mt: 2,
                 justifyContent: "center",

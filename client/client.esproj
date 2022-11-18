@@ -14,7 +14,11 @@
   <ItemGroup>
     <Folder Include="src\App\api\" />
     <Folder Include="src\App\Errors\" />
+    <Folder Include="src\App\context\" />
+    <Folder Include="src\App\util\" />
     <Folder Include="src\features\about\" />
     <Folder Include="src\features\home\" />
+    <Folder Include="src\features\Basket\" />
+    <Folder Include="src\features\checkout\" />
   </ItemGroup>
 </Project>

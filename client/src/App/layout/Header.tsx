@@ -1,6 +1,7 @@
 import { ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, FormControlLabel, FormGroup, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useStoreContext } from "../context/StoreContext";
 import artlogo from '../layout/articuno.png';
 
 interface Props {
@@ -9,6 +10,10 @@ interface Props {
 }
 
 export default function Header({ checked, handlechange }: Props) {
+    const { basket } = useStoreContext();
+
+    const itemcount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
+
     const midlinks =
         [
             { title: 'Catalog', path: '/catalog' },
@@ -58,11 +63,11 @@ export default function Header({ checked, handlechange }: Props) {
 
                 </Box>
                 <Box display='flex' alignItems='center'>
-                    <IconButton sx={{
+                    <IconButton component={Link} to='/basket' sx={{
                         color: 'white',
                         '&:hover': { color: 'black' }
                     }} >
-                        <Badge badgeContent={4}>
+                        <Badge badgeContent={itemcount}>
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
