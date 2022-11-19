@@ -1,10 +1,11 @@
 import { createBrowserHistory } from "history";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from "react-redux";
 import { Router } from 'react-router-dom';
-import { StoreProvider } from "./App/context/StoreContext";
 import App from './App/layout/App';
 import './App/layout/styles.css';
+import { store } from "./App/store/configureStore";
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -15,9 +16,9 @@ export const history = createBrowserHistory();
 root.render(
     <Router history={history} >
         <React.StrictMode>
-            <StoreProvider>
+            <Provider store={store}>
                 <App />
-            </StoreProvider>
+            </Provider>
         </React.StrictMode>
     </Router>
 

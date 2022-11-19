@@ -6,32 +6,34 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import aboutpage from '../../features/about/aboutpage';
 import BasketPage from '../../features/Basket/BasketPage';
+import { setBasket } from '../../features/Basket/BasketSlice';
 import Catalog from '../../features/catalog/catalog';
 import ProductDetails from '../../features/catalog/ProductDetails';
 import CheckOutPage from '../../features/checkout/CheckoutPage';
 import contactpage from '../../features/contact/contactpage';
 import HomePage from '../../features/home/homepage';
 import agent from '../api/agent';
-import { useStoreContext } from '../context/StoreContext';
 import NotFound from '../Errors/NotFound';
 import ServerError from '../Errors/ServerError';
+import { useAppDispatch } from '../store/configureStore';
 import { getCookie } from '../util/util';
 import './App.css';
 import Header from './Header';
 import LoadingComponent from './LoadingComponent';
 
 function App() {
-    const { setBasket } = useStoreContext();
+    //const { setBasket } = useStoreContext();
+    const dispatch = useAppDispatch();
     const [loading, setloading] = useState(true);
     useEffect(() => {
         const buyerID = getCookie("buyerID");
         if (buyerID) {
-            agent.Basket.get().then(basket => setBasket(basket))
+            agent.Basket.get().then(basket => dispatch(setBasket(basket)))
                 .catch(error => console.log(error))
                 .finally(() => setloading(false))
         }
         else setloading(false);
-    }, [setBasket])
+    }, [dispatch])
 
     const [mode, setmode] = useState(false)
     const palettetype = mode ? 'dark' : 'light'

@@ -1,8 +1,8 @@
 import { ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, FormControlLabel, FormGroup, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
-import { useStoreContext } from "../context/StoreContext";
 import artlogo from '../layout/articuno.png';
+import { useAppSelector } from "../store/configureStore";
 
 interface Props {
     checked: boolean,
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function Header({ checked, handlechange }: Props) {
-    const { basket } = useStoreContext();
+    const { basket } = useAppSelector(state => state.basket);
 
     const itemcount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
 

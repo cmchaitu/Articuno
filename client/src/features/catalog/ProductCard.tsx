@@ -2,19 +2,20 @@ import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, 
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import agent from "../../App/api/agent";
-import { useStoreContext } from "../../App/context/StoreContext";
 import { Product } from "../../App/Models/Product";
+import { useAppDispatch } from "../../App/store/configureStore";
 import { PriceFormat } from "../../App/util/util";
+import { setBasket } from "../Basket/BasketSlice";
 interface Props {
     product: Product
 }
 export default function ProductCard({ product }: Props) {
     const [loading, setLoading] = useState(false);
-    const { setBasket } = useStoreContext();
+    const dispatch = useAppDispatch();
     function handleAddItem(productID: number) {
         setLoading(true);
         agent.Basket.addItem(productID)
-            .then((basket) => setBasket(basket))
+            .then((basket) => dispatch(setBasket(basket)))
             .catch(error => console.log(error)).finally(() => setLoading(false))
     }
     return (

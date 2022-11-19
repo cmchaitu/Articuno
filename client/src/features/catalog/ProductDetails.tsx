@@ -2,15 +2,18 @@ import { Button, Divider, Grid, ImageListItem, Table, TableBody, TableCell, Tabl
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import agent from "../../App/api/agent";
-import { useStoreContext } from "../../App/context/StoreContext";
 import NotFound from "../../App/Errors/NotFound";
 import LoadingComponent from "../../App/layout/LoadingComponent";
 import { Product } from "../../App/Models/Product";
+import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
 import { PriceFormat } from "../../App/util/util";
+import { removeItem, setBasket } from "../Basket/BasketSlice";
 
 export default function ProductDetails() {
     const { id } = useParams<{ id: string }>();
-    const { basket, setBasket, removeItem } = useStoreContext();
+    const { basket } = useAppSelector(state => state.basket);
+
+    const dispatch = useAppDispatch();
     const [product, setproduct] = useState<Product | null>(null);
     const [loading, setloading] = useState(true);
     const [quantity, setquantity] = useState(0);
@@ -33,11 +36,11 @@ export default function ProductDetails() {
         if (!item || quantity > item.quantity) {
             const updatedquantity = item ? quantity - item.quantity : quantity;
             agent.Basket.addItem(product?.id!, updatedquantity)
-                .then(basket => setBasket(basket)).catch(e => console.log(e))
+                .then(basket => dispatch(setBasket(basket))).catch(e => console.log(e))
         } else {
             const updatedquantity = item.quantity - quantity;
             agent.Basket.removeItem(product?.id!, updatedquantity)
-                .then(() => removeItem(product?.id!, updatedquantity)).catch(e => console.log(e))
+                .then(() => dispatch(removeItem({ productid: product?.id!, quantity: updatedquantity }))).catch(e => console.log(e))
         }
     }
     const [progress, setProgress] = useState(10);
