@@ -1,23 +1,16 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, CircularProgress, Typography } from "@mui/material";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import agent from "../../App/api/agent";
 import { Product } from "../../App/Models/Product";
-import { useAppDispatch } from "../../App/store/configureStore";
+import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
 import { PriceFormat } from "../../App/util/util";
-import { setBasket } from "../Basket/BasketSlice";
+import { addBasketItemAsync } from "../Basket/BasketSlice";
 interface Props {
     product: Product
 }
 export default function ProductCard({ product }: Props) {
-    const [loading, setLoading] = useState(false);
+    const { status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
-    function handleAddItem(productID: number) {
-        setLoading(true);
-        agent.Basket.addItem(productID)
-            .then((basket) => dispatch(setBasket(basket)))
-            .catch(error => console.log(error)).finally(() => setLoading(false))
-    }
+
     return (
         <Card sx={{ bgcolor: 'cornflowerblue' }}>
             <CardHeader
@@ -57,12 +50,12 @@ export default function ProductCard({ product }: Props) {
                 </Typography>
             </CardContent>
             <CardActions>
-                {loading
+                {status.includes('pendingAddingBasketItem' + product.id)
                     ? <Button sx={{ color: 'white' }}
                         size="small"><CircularProgress size="small" /></Button>
                     :
                     <Button
-                        onClick={() => handleAddItem(product.id)}
+                        onClick={() => dispatch(addBasketItemAsync({ productID: product.id }))}
                         sx={{ color: 'white' }}
                         size="small">Add to Cart
                     </Button>

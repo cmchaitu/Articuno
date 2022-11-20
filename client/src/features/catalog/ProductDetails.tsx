@@ -7,7 +7,7 @@ import LoadingComponent from "../../App/layout/LoadingComponent";
 import { Product } from "../../App/Models/Product";
 import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
 import { PriceFormat } from "../../App/util/util";
-import { removeItem, setBasket } from "../Basket/BasketSlice";
+import { addBasketItemAsync, removeBasketItemAsync } from "../Basket/BasketSlice";
 
 export default function ProductDetails() {
     const { id } = useParams<{ id: string }>();
@@ -17,8 +17,7 @@ export default function ProductDetails() {
     const [product, setproduct] = useState<Product | null>(null);
     const [loading, setloading] = useState(true);
     const [quantity, setquantity] = useState(0);
-    const [submitting, setsubmitting] = useState(false);
-    const item = basket?.items.find(i => i.productID == product?.id);
+    const item = basket?.items.find(i => i.productID === product?.id);
 
     useEffect(() => {
         if (item) setquantity(item.quantity);
@@ -35,27 +34,15 @@ export default function ProductDetails() {
     function handleUpdateCart() {
         if (!item || quantity > item.quantity) {
             const updatedquantity = item ? quantity - item.quantity : quantity;
-            agent.Basket.addItem(product?.id!, updatedquantity)
-                .then(basket => dispatch(setBasket(basket))).catch(e => console.log(e))
+            dispatch(addBasketItemAsync({ productID: product?.id!, quantity: updatedquantity }))
         } else {
             const updatedquantity = item.quantity - quantity;
-            agent.Basket.removeItem(product?.id!, updatedquantity)
-                .then(() => dispatch(removeItem({ productid: product?.id!, quantity: updatedquantity }))).catch(e => console.log(e))
+            dispatch(removeBasketItemAsync({ productID: product?.id!, quantity: updatedquantity }))
         }
     }
-    const [progress, setProgress] = useState(10);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
     if (loading) return (<LoadingComponent message="Product Details...." />)
-    //if (!product) return <Typography sx={{ textAlign: 'center', mt: 20 }} variant="h6" color='primary'>
-    //    Product not found..</Typography>
+
     if (!product) return <NotFound />
     return (
         <>
@@ -114,7 +101,7 @@ export default function ProductDetails() {
                         </Grid>
                         <Grid item xs={6}>
                             <Button
-                                disabled={item?.quantity === quantity || !item && quantity === 0}
+                                disabled={item?.quantity === quantity || (!item && quantity === 0)}
                                 onClick={handleUpdateCart}
                                 sx={{ height: '55px' }}
                                 color='primary'
