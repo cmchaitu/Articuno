@@ -1,14 +1,21 @@
 import { Container } from "@mui/material";
-import { useEffect, useState } from "react";
-import agent from "../../App/api/agent";
-import { Product } from "../../App/Models/Product";
+import { useEffect } from "react";
+import LoadingComponent from "../../App/layout/LoadingComponent";
+import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
+import { fetchProductsAsync, productselectors } from "./catalogslice";
 import ProductList from "./ProductList";
 export default function Catalog() {
-    const [products, setproducts] = useState<Product[]>([])
+    const products = useAppSelector(productselectors.selectAll);
+    const dispatch = useAppDispatch();
+    const { productsloaded, status } = useAppSelector(state => state.catalog)
 
     useEffect(() => {
-        agent.catalog.list().then(data => setproducts(data))
-    }, [])
+        if (!productsloaded) dispatch(fetchProductsAsync());
+    }, [productsloaded, dispatch])
+
+    if (status.includes('pending')) {
+        return <LoadingComponent message="Loading Products ..." />
+    }
     return (
         <>
 

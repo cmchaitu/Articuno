@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 export const history = createBrowserHistory();
-
+//store.dispatch(fetchProductsAsync());
 root.render(
     <Router history={history} >
         <React.StrictMode>
